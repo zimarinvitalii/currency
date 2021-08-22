@@ -11,3 +11,6 @@ def generate_password(request):
     password_len = int(request.GET.get('password-len'))
     password = gen_pass(password_len)
     return HttpResponse(password)
+
+def contact_us(request):
+    return HttpResponse('Contact Us')
