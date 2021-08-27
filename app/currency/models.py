@@ -9,6 +9,7 @@ class Rate(models.Model):
     type = models.CharField(max_length=3)  # USD, EUR
     display_name = models.CharField(max_length=12)
 
+
 class ContactUs(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     email_form = models.EmailField(max_length=50)
