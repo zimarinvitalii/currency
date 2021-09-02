@@ -13,5 +13,5 @@ class Rate(models.Model):
 class ContactUs(models.Model):
     id = models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')
     email_form = models.EmailField(max_length=50)
-    subject = models.CharField(max_length=50, default="", editable=False)
-    message = models.CharField(max_length=5000, default="", editable=True)
+    subject = models.CharField(max_length=50)
+    message = models.CharField(max_length=5000)

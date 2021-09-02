@@ -7,8 +7,8 @@ from currency.models import Rate, ContactUs
 from django.shortcuts import render
 
 
-def hello_world(request):
-    return HttpResponse('Hello World')
+def index(request):
+    return render(request, 'index.html')
 
 
 def generate_password(request):
@@ -19,25 +19,25 @@ def generate_password(request):
 
 def rate_list(request):
     rates = Rate.objects.all()
+    context = {
+        'rate_list': rates,
+    }
 
-    result = []
-    for rate in rates:
-        # breakpoint
-        rate.append(
-            f'Id: {rate.id} Sale: {rate.sale} Buy: {rate.buy} </br>'
-        )
-
-    return HttpResponse(str(result))
+    return render(request, 'rate_list.html', context=context)
 
 
 def contact_us(request):
     contacts = ContactUs.objects.all()
+    context = {
+        'contact_us': contacts,
+    }
 
-    result = []
-    for contact in contacts:
-        # breakpoint
-        contact.append(
-            f'Id: {contact.id} Email: {contact.email_form} Subject: {contact.subject} Message: {contact.message}</br>'
-        )
+    return render(request, 'contact_us.html', context=context)
 
-    return HttpResponse(str(result))
+
+def response_codes(request):
+    response = HttpResponse('Response', status=301, headers={'Location': 'https://google.com'})
+    return response
+
+def tables(request):
+    return render(request, 'tmp.html')
