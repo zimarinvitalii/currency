@@ -39,5 +39,3 @@ def response_codes(request):
     response = HttpResponse('Response', status=301, headers={'Location': 'https://google.com'})
     return response
 
-def tables(request):
-    return render(request, 'tmp.html')

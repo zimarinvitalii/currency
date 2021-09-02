@@ -14,5 +14,4 @@ urlpatterns = [
     path('contact-us/', contact_us),
     path('rate/list/', rate_list),
     path('response-codes/', response_codes),
-    path('tables', tables),
 ]
