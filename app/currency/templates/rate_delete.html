@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block main_content %}
+
+Are you sure? The record with ID {{ object.id }} will not be restored.
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Delete</button>
+</form>
+
+{% endblock %}
+
