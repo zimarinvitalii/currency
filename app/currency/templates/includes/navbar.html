@@ -1,6 +1,6 @@
 <div>
     <div><a href="/index/">Home</a></div>
-    <div><a href="/rate/list/">Rate List</a></div>
-    <div><a href="/source/list/">Source List</a></div>
-    <div><a href="/contact-us/">Contact Us</a></div>
+    <div><a href="{% url 'currency:rate-list' %}">Rate List</a></div>
+    <div><a href="{% url 'source-list' %}">Source List</a></div>
+    <div><a href="{% url 'contact-us' %}">Contact Us</a></div>
 </div>
