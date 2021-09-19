@@ -1,7 +1,8 @@
 from django.urls import reverse, reverse_lazy
-
+from django.core.mail import send_mail
 from django.http import HttpResponse, HttpResponseRedirect
-
+# from settings import settings
+from django.conf import settings
 from currency.utils import generate_password as gen_pass
 
 from currency.models import Rate, ContactUs, Source
@@ -60,11 +61,39 @@ class RateListView(ListView):
     template_name = 'rate_list.html'
 
 
-class RateCreateView(CreateView):
-    queryset = Rate.objects.all()
-    form_class = RateForm
-    success_url = reverse_lazy('currency:rate-list')
-    template_name = 'rate_create.html'
+class ContactUsCreateView(CreateView):
+    model = ContactUs
+    success_url = reverse_lazy('index')
+    template_name = 'contact_us_create.html'
+    fields = (
+        'email_to',
+        'subject',
+        'body',
+    )
+
+    def form_valid(self, form):
+        subject = form.cleaned_data['subject']
+        body = form.cleaned_data['body']
+        email_to = form.cleaned_data['email_to']
+
+        full_email_body = f'''
+        Email from: {email_to}
+        Body: {body}
+        '''
+
+        send_mail(
+            subject,
+            full_email_body,
+            settings.EMAIL_HOST_USER,
+            [settings.SUPPORT_EMAIL],
+            fail_silently=False,
+        )
+
+        return super().form_valid(form)
+
+    def form_invalid(self, form):
+        print('form_invalid')
+        return super().form_invalid(form)
 
 
 # def rate_create(request):
@@ -79,6 +108,13 @@ class RateCreateView(CreateView):
 #         'form': form,
 #     }
 #     return render(request, 'rate_create.html', context=context)
+
+
+class RateCreateView(CreateView):
+    queryset = Rate.objects.all()
+    form_class = RateForm
+    success_url = reverse_lazy('currency:rate-list')
+    template_name = 'rate_create.html'
 
 
 class ContactUsView(ListView):
@@ -162,6 +198,7 @@ class SourceListView(ListView):
     queryset = Source.objects.all()
     template_name = 'source_list.html'
 
+
 # def source_list(request):
 #     sources = Source.objects.all()
 #     context = {
@@ -218,6 +255,7 @@ class SourceDeleteView(DeleteView):
     success_url = reverse_lazy('source-list')
     template_name = 'source_delete.html'
 
+
 # def source_delete(request, source_id):
 #     source = get_object_or_404(Source, id=source_id)
 #
@@ -232,6 +270,6 @@ class SourceDeleteView(DeleteView):
 #     return render(request, 'source_delete.html', context=context)
 
 
-# def response_codes(request):
-#     response = HttpResponse('Response', status=301, headers={'Location': 'https://google.com'})
-#     return response
+def response_codes(request):
+    response = HttpResponse('Response', status=301, headers={'Location': 'https://google.com'})
+    return response

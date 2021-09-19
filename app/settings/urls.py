@@ -1,5 +1,6 @@
 from currency.views import (ContactUsView,  GeneratePasswordView, IndexView,
-                           response_codes, SourceListView, SourceCreateView, SourceUpdateView, SourceDeleteView)
+                            response_codes, SourceListView, SourceCreateView,
+                            SourceUpdateView, SourceDeleteView)
 
 from django.contrib import admin
 import debug_toolbar
@@ -14,7 +15,7 @@ urlpatterns = [
     path('currency/', include('currency.urls')),
 
 
-    path('index/', IndexView.as_view()),
+    path('index/', IndexView.as_view(), name='index'),
     path('gen-pass/',  GeneratePasswordView.as_view()),
     path('contact-us/', ContactUsView.as_view(), name='contact-us'),
 
@@ -24,7 +25,7 @@ urlpatterns = [
     path('source/update/<int:pk>/', SourceUpdateView.as_view(), name='source-update'),
     path('source/delete/<int:pk>/', SourceDeleteView.as_view(), name='source-delete'),
 
-    # path('response-codes/', response_codes),
+    path('response-codes/', response_codes),
 
     path('__debug__/', include(debug_toolbar.urls)),
 ]
