@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
-
+from celery.schedules import crontab
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -144,3 +144,17 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'utest2108@gmail.com'
 EMAIL_HOST_PASSWORD = '3zO895Ng'
 SUPPORT_EMAIL = 'utest2108@gmail.com'
+
+CELERY_BROKER_URL = 'amqp://localhost'
+
+CELERY_BEAT_SCHEDULE = {
+    'debug': {
+        'task': 'currency.tasks.parse_privatbank',
+        'schedule': crontab(minute='*/1'),
+        'task': 'currency.tasks.parse_alfabank',
+        'schedule': crontab(minute='*/1'),
+        'task': 'currency.tasks.parse_govbank',
+        'schedule': crontab(minute='*/1'),
+
+    },
+}
