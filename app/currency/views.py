@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 
 from currency.utils import generate_password as gen_pass
 
-from currency.models import Rate, ContactUs, Source
+from currency.models import Rate, ContactUs, Source, ResponseLog
 from currency.forms import RateForm, SourceForm, ContactUsForm
 from django.views.generic import (
     ListView, CreateView, DetailView,
@@ -56,7 +56,7 @@ class GeneratePasswordView(TemplateView):
 
 
 class RateListView(ListView):
-    queryset = Rate.objects.all()
+    queryset = Rate.objects.all().order_by('-created')
     template_name = 'rate_list.html'
 
 
@@ -80,9 +80,7 @@ class ContactUsCreateView(CreateView):
         Body: {body}
         '''
 
-
-
-        contact_us.apply_async(args=(subject, ), kwargs={'body': full_email_body})
+        contact_us.apply_async(args=(subject,), kwargs={'body': full_email_body})
 
         return super().form_valid(form)
 

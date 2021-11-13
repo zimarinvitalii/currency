@@ -11,6 +11,7 @@ from django.urls import include, path
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    path('silk/', include('silk.urls', namespace='silk')),
 
     path('currency/', include('currency.urls')),
 
