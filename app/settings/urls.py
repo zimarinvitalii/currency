@@ -5,14 +5,22 @@ from currency.views import (ContactUsView,  GeneratePasswordView, IndexView,
 from django.contrib import admin
 import debug_toolbar
 from django.urls import include, path
-
-
+from django.views.generic import TemplateView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
 
+    path('', TemplateView.as_view(template_name='index.html'), name='index'),
+
+
+    path('silk/', include('silk.urls', namespace='silk')),
+
+
 
     path('currency/', include('currency.urls')),
+    path('accounts/', include('accounts.urls')),
+
+    path('auth/', include('django.contrib.auth.urls')),
 
 
     path('index/', IndexView.as_view(), name='index'),

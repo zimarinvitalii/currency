@@ -3,4 +3,15 @@
     <div><a href="{% url 'currency:rate-list' %}">Rate List</a></div>
     <div><a href="{% url 'source-list' %}">Source List</a></div>
     <div><a href="{% url 'currency:contactus-create' %}">Contact Us</a></div>
+
+    {% if request.user.is_authenticated %}
+        {{ request.user.email }}
+        <div><a href="{% url 'accounts:my-profile' request.user.id %}">My Profile</a></div>
+        <div><a href="{% url 'logout' %}">Logout</a></div>
+        <div><a href="{% url 'password_reset' %}">Reset password</a></div>
+    {% else %}
+        <div><a href="{% url 'login' %}">Login</a></div>
+        <div><a href="#">SignUp</a></div>
+    {% endif %}
+
 </div>

@@ -18,6 +18,6 @@ urlpatterns = [
     path('rate/update/<int:pk>/', RateUpdateView.as_view(), name='rate-update'),
     path('rate/delete/<int:pk>/', RateDeleteView.as_view(), name='rate-delete'),
 
-    path('contactus/create/', ContactUsCreateView.as_view(), name='contactus-create')
+    path('contactus/create/', ContactUsCreateView.as_view(), name='contactus-create'),
 
 ]

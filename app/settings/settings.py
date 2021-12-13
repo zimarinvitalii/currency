@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/3.2/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.2/ref/settings/
 """
-
+from django.urls import reverse_lazy
 from pathlib import Path
 from celery.schedules import crontab
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -28,7 +28,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
-
+LOGIN_REDIRECT_URL = reverse_lazy('index')
+LOGOUT_REDIRECT_URL = reverse_lazy('index')
 # Application definition
 
 INSTALLED_APPS = [
@@ -44,9 +45,15 @@ INSTALLED_APPS = [
     'rangefilter',
 
     'currency',
+    'silk.apps.SilkAppConfig',
+    'accounts'
 ]
 
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
 MIDDLEWARE = [
+
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -55,6 +62,10 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'currency.middlewares.ResponseTimeMiddleware',
+    'currency.middlewares.GclidMiddleware',
+    'silk.middleware.SilkyMiddleware',
+
 ]
 
 ROOT_URLCONF = 'settings.urls'
@@ -121,7 +132,7 @@ USE_L10N = True
 
 USE_TZ = True
 
-
+AUTH_USER_MODEL = 'accounts.User'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
@@ -158,3 +169,4 @@ CELERY_BEAT_SCHEDULE = {
 
     },
 }
+

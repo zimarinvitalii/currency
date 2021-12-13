@@ -5,6 +5,7 @@ import requests
 from decimal import Decimal
 from bs4 import BeautifulSoup
 from currency.models import Rate
+from currency import model_choices as mch
 
 
 def round_currency(num):
@@ -39,16 +40,20 @@ def parse_privatbank():
 
     rates = response.json()
     source = 'privatbank'
-    available_currency_types = ('USD', 'EUR')
+    available_currency_types = {
+        'USD': mch.TYPE_USD,
+        'EUR': mch.TYPE_EUR,
 
+    }
     for rate in rates:
         currency_type = rate['ccy']
         if currency_type in available_currency_types:
             sale = round_currency(rate['sale'])
             buy = round_currency(rate['buy'])
+            ct = available_currency_types[currency_type]
 
             last_rate = Rate.objects.filter(
-                type=currency_type,
+                type=ct,
                 source=source,
             ).order_by('created').last()
 
@@ -58,7 +63,7 @@ def parse_privatbank():
                 last_rate.buy != buy
         ):
             Rate.objects.create(
-                type=currency_type,
+                type=ct,
                 sale=sale,
                 buy=buy,
                 source=source,
@@ -88,7 +93,11 @@ def parse_alfabank():
     rates = (rate_eur, rate_usd)
 
     source = 'alfabank'
-    available_currency_types = ('USD', 'EUR')
+    available_currency_types = {
+        'USD': mch.TYPE_USD,
+        'EUR': mch.TYPE_EUR,
+
+    }
 
     for rate in rates:
         currency_type = rate['ccy']
@@ -125,7 +134,11 @@ def parse_govbank():
     rates = response.json()
 
     source = 'govbank'
-    available_currency_types = ('USD', 'EUR')
+    available_currency_types = {
+        'USD': mch.TYPE_USD,
+        'EUR': mch.TYPE_EUR,
+
+    }
 
     for rate in rates:
         currency_type = rate['cc']

@@ -1,0 +1,14 @@
+TYPE_USD = 'USD'
+TYPE_EUR = 'EUR'
+RATE_TYPES = (
+    (TYPE_USD, 'Dollar'),
+    (TYPE_EUR, 'Euro'),
+)
+
+
+REQUEST_GET = 'GET'
+REQUEST_POST = 'POST'
+RESPONSELOG_REQUESTS =(
+    (REQUEST_GET, 'get'),
+    (REQUEST_POST, 'post')
+)
