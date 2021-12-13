@@ -10,6 +10,7 @@ from django.views.generic import (
     ListView, CreateView, DetailView,
     UpdateView, DeleteView, View, TemplateView)
 
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, get_object_or_404
 
 
@@ -58,6 +59,10 @@ class GeneratePasswordView(TemplateView):
 class RateListView(ListView):
     queryset = Rate.objects.all().order_by('-created')
     template_name = 'rate_list.html'
+
+    # def get(self, request, *args, **kwargs):
+    #     print(request.COOKIES)
+    #     return super().get(request, *args, **kwargs)
 
 
 class ContactUsCreateView(CreateView):
@@ -124,9 +129,14 @@ class ContactUsView(ListView):
 #     return render(request, 'contact_us.html', context=context)
 
 
-class RateDetailView(DetailView):
+class RateDetailView(LoginRequiredMixin, DetailView):
     queryset = Rate.objects.all()
     template_name = 'rate_details.html'
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        queryset = queryset.filter(id=self.request.user.id)
+        return queryset
 
 
 # def rate_details(request, rate_id):
