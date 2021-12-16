@@ -11,7 +11,7 @@
         <div><a href="{% url 'password_reset' %}">Reset password</a></div>
     {% else %}
         <div><a href="{% url 'login' %}">Login</a></div>
-        <div><a href="#">SignUp</a></div>
+        <div><a href="{% url 'accounts:sign-up' %}">SignUp</a></div>
     {% endif %}
 
 </div>
