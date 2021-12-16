@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import UpdateView
+from django.views.generic import UpdateView, CreateView, RedirectView
 # Create your views here.
+from accounts.forms import SignUpForm
 from accounts.models import User
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -22,3 +23,27 @@ class MyProfileView(LoginRequiredMixin, UpdateView):
 
     def get_object(self, queryset=None):
         return self.request.user
+
+
+class SignUpView(CreateView):
+    model = User
+    template_name = 'sign_up.html'
+    success_url = reverse_lazy('index')
+    form_class = SignUpForm
+
+
+class ActivateUserView(RedirectView):
+    pattern_name = 'index'
+
+    def get_redirect_url(self, *args, **kwargs):
+        username = kwargs.pop('username')
+        user = get_object_or_404(User, username=username, is_active=False)
+
+        user.is_active = True
+
+        # update_fields - save only needed(minimum) fields
+        user.save(update_fields=('is_active', ))
+
+        return super().get_redirect_url(*args, **kwargs)
+
+
